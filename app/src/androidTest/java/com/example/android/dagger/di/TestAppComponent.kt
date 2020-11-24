@@ -1,3 +1,5 @@
+package com.example.android.dagger.di
+
 /*
  * Copyright (C) 2019 The Android Open Source Project
  *
@@ -14,19 +16,11 @@
  * limitations under the License.
  */
 
-package com.example.android.dagger.storage
+import dagger.Component
+import javax.inject.Singleton
 
-import javax.inject.Inject
-
-class FakeStorage @Inject constructor(): Storage {
-
-    private val map = mutableMapOf<String, String>()
-
-    override fun setString(key: String, value: String) {
-        map[key] = value
-    }
-
-    override fun getString(key: String): String {
-        return map[key].orEmpty()
-    }
-}
+// Replacement for AppComponent in android tests
+@Singleton
+// Includes TestStorageModule that overrides objects provided in StorageModule
+@Component(modules = [TestStorageModule::class, AppSubcomponents::class])
+interface TestAppComponent : AppComponent
